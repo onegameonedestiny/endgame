@@ -1,0 +1,11 @@
+{
+	"name": "註冊讀寫資料",
+	"short_name": "註冊讀寫資料",
+	"description": "",
+	"start_url": "index.html",
+	"display": "fullscreen",
+	"orientation": "portrait",
+	"background_color": "#ffffff",
+	"icons": [],
+	"screenshots": []
+}
