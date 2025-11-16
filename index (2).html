@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <title>iOS HTTP Method Test</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    button { padding: 10px 20px; margin: 10px 0; font-size: 16px; cursor: pointer; }
+    pre { background: #f0f0f0; padding: 10px; overflow-x: auto; }
+  </style>
+</head>
+<body>
+  <h1>iOS HTTP Method Test</h1>
+  <p>測試 GET / POST / PATCH 是否在 iOS (Safari, LIFF) 中可用</p>
+
+  <button id="get">🔍 Test GET Firestore</button><br />
+  <button id="post">📤 Test POST</button><br />
+  <button id="patch">✏️ Test PATCH</button><br />
+
+  <h3>Result:</h3>
+  <pre id="result">尚無測試結果，請點擊按鈕開始測試。</pre>
+
+  <script>
+    const resultBox = document.getElementById("result");
+
+    function log(msg) {
+      resultBox.textContent = msg;
+    }
+
+    // Firestore GET 測試
+    document.getElementById("get").onclick = async () => {
+      log("🔍 Sending GET to Firestore...");
+      try {
+        const res = await fetch(
+          "https://firestore.googleapis.com/v1/projects/theendoftheworld/databases/(default)/documents/playerdata/0101aOPTNU"
+        );
+        const data = await res.json();
+        log("📥 GET success:\n" + JSON.stringify(data, null, 2));
+      } catch (err) {
+        log("❌ GET failed: " + err);
+      }
+    };
+
+    // POST 測試（使用 httpbin）
+    document.getElementById("post").onclick = async () => {
+      log("📤 Sending POST to httpbin...");
+      try {
+        const res = await fetch("https://httpbin.org/post", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ test: "Hello from iOS" }),
+        });
+        const data = await res.json();
+        log("📤 POST success:\n" + JSON.stringify(data, null, 2));
+      } catch (err) {
+        log("❌ POST failed: " + err);
+      }
+    };
+
+    // PATCH 測試（使用 httpbin）
+    document.getElementById("patch").onclick = async () => {
+      log("✏️ Sending PATCH to httpbin...");
+      try {
+        const res = await fetch("https://httpbin.org/patch", {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ update: "Testing PATCH" }),
+        });
+        const data = await res.json();
+        log("✏️ PATCH success:\n" + JSON.stringify(data, null, 2));
+      } catch (err) {
+        log("❌ PATCH failed: " + err);
+      }
+    };
+  </script>
+</body>
+</html>
